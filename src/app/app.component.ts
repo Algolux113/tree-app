@@ -29,29 +29,44 @@ export class AppComponent {
 
     initData() {
         let treeData: Node[] = [];
-    
-        this.groups.forEach(currGroup => {
-            let group: Node = {
-                name: currGroup.name
-            };
-    
-            let groupElems: Node[] = [];
-    
-            this.elems.forEach(currElem => {
-                if (currGroup.id === currElem.groupId) {
-                    let elem: Node = {
-                        name: currElem.name
-                    };
-    
-                    groupElems.push(elem);
-                }
-            });
-    
-            if (groupElems.length > 0) {
-                group.children = groupElems;
+
+        let dictionary = {};
+
+        this.groups.forEach(group => {
+            let node = dictionary[group.id];
+
+            if (!node) {
+                dictionary[group.id] = node = { 
+                    name: group.name, 
+                    children: [] 
+                };
+            } else {
+                node.name = group.name;
             }
 
-            treeData.push(group);
+            if (group.companyId) {
+                let company = this.companies.find(x => x.id === group.companyId);
+                node.children.push({ name: company.name});
+            }
+
+            if (group.parentGroupId) {
+                let par = dictionary[group.parentGroupId];
+
+                if (!par) {
+                    dictionary[group.parentGroupId] = par = { children: [] };
+                }
+
+                par.children.push(node);
+            } else {
+                treeData.push(node);
+            }
+        });
+
+        this.elems.forEach(currElem => {
+            let group = dictionary[currElem.groupId];
+            if (group) {
+                group.children.push({name: currElem.name});
+            }
         });
 
         this.dataSource.data = treeData;
