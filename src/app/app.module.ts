@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 
 import { HttpClientModule }   from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatTreeModule, MatIconModule, MatButtonModule} from '@angular/material'
+import {MatTreeModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule} from '@angular/material'
 
 @NgModule({
     imports:
@@ -17,6 +17,8 @@ import {MatTreeModule, MatIconModule, MatButtonModule} from '@angular/material'
             MatTreeModule, 
             MatIconModule,
             MatButtonModule,
+            MatToolbarModule,
+            MatSidenavModule
         ],
     declarations: [AppComponent],
     bootstrap: [AppComponent]
